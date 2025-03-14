@@ -1,0 +1,5 @@
+scss-css:
+  filter: cssrewrite
+  output: ckanext-scss/%(version)s-scss.css
+  contents:
+    - css/main.css

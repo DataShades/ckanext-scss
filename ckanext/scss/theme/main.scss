@@ -1,0 +1,30 @@
+// base styles
+@use "base/reset";
+@use "base/fonts";
+
+// abstracts
+@use "abstracts/variables";
+@use "abstracts/functions";
+@use "abstracts/mixins";
+@use "abstracts/placeholders";
+@use "abstracts/animations";
+
+// components
+@use "components/badges";
+@use "components/breadcrumb";
+@use "components/buttons";
+@use "components/dropdown";
+@use "components/facets";
+@use "components/forms";
+@use "components/pagination";
+@use "components/tables";
+@use "components/tooltip";
+
+// layouts
+@use "layout/header";
+@use "layout/footer";
+
+// pages
+@use "pages/home";
+@use "pages/dataset";
+@use "pages/resource";
