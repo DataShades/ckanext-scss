@@ -1,0 +1,43 @@
+@use "abstracts/mixins" as m;
+
+.card-component {
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .card-component__title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-component__content {
+        font-size: 0.875rem;
+    }
+
+    // Enhanced styles for tablets (sm)
+    @include m.media-breakpoint-up(sm) {
+        padding: 1.5rem;
+
+        .card-component__title {
+            font-size: 1.5rem;
+        }
+
+        .card-component__content {
+            font-size: 1rem;
+        }
+    }
+
+    // Enhanced styles for desktops (lg)
+    @include m.media-breakpoint-up(lg) {
+        display: flex;
+
+        .card-component__title {
+            font-size: 1.75rem;
+            flex: 0 0 30%;
+        }
+
+        .card-component__content {
+            flex: 0 0 70%;
+            padding-left: 1.5rem;
+        }
+    }
+}

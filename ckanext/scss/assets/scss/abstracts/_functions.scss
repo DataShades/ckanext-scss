@@ -1,0 +1,43 @@
+@use "sass:math";
+
+// Bootstrap 5 uses a default font-size of 16px (1rem)
+// This variable can be changed if your project uses a different base
+$font-size-base: 16px !default;
+
+// Function to convert pixels to rem
+@function to_rem($pixels, $context: $font-size-base) {
+    @if (math.is-unitless($pixels)) {
+        $pixels: $pixels * 1px;
+    }
+
+    @if (math.is-unitless($context)) {
+        $context: $context * 1px;
+    }
+
+    @return math.div($pixels, $context) * 1rem;
+}
+
+// A shorthand mixin for to_rem
+@mixin rem($property, $values) {
+    $rem-values: (
+    );
+
+    @each $value in $values {
+        @if type-of($value)==number and unit($value)=="px" {
+            $rem-values: append($rem-values, to_rem($value));
+        }
+
+        @else {
+            $rem-values: append($rem-values, $value);
+        }
+    }
+
+    #{$property}: $rem-values;
+}
+
+// Example usage:
+// .element {
+//   font-size: to_rem(20px);                       // Outputs: font-size: 1.25rem;
+//   margin: to_rem(24px) to_rem(16px);             // Outputs: margin: 1.5rem 1rem;
+//   @include rem(padding, 16px 24px 8px 12px);     // Outputs: padding: 1rem 1.5rem 0.5rem 0.75rem;
+// }

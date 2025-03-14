@@ -1,0 +1,34 @@
+@use "sass:map";
+@use "abstracts/variables" as v;
+@use "abstracts/functions" as f;
+
+@mixin register-button($type, $outline: #CED4DA) {
+    &.btn-#{$type} {
+        border: 1px solid map.get(v.$button-styles, $type, "border");
+        background: map.get(v.$button-styles, $type, "bg");
+        color: map.get(v.$button-styles, $type, "color");
+
+        &:hover,
+        &:active {
+            color: map.get(v.$button-styles, $type, "hover-color");
+            background-color: map.get(v.$button-styles, $type, "hover-bg");
+        }
+
+        &:focus {
+            box-shadow: inset 0 0px 0px $outline, 0 0 0 f.to_rem(3px) $outline;
+        }
+    }
+}
+
+.btn {
+    border-radius: f.to_rem(4px);
+    padding: f.to_rem(6px) f.to_rem(12px);
+    font-size: f.to_rem(16px);
+    display: inline-flex;
+    justify-content: space-between;
+    gap: f.to_rem(6px);
+    box-shadow: none;
+
+    @include register-button("primary");
+    @include register-button("secondary");
+}

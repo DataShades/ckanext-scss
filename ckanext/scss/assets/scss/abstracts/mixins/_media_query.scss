@@ -1,0 +1,59 @@
+@use "sass:map";
+
+// Bootstrap 5 Breakpoint Mixins for Mobile First Approach
+// These use the same breakpoints as Bootstrap 5's default breakpoints
+
+// Bootstrap 5 default breakpoints
+$breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px) !default;
+
+// Mobile-first media query mixin
+// Usage: @include media-breakpoint-up(md) { ... }
+@mixin media-breakpoint-up($breakpoint) {
+    $min-width: map.get($breakpoints, $breakpoint);
+
+    @if $min-width == 0 {
+        @content;
+    }
+
+    @else {
+        @media (min-width: $min-width) {
+            @content;
+        }
+    }
+}
+
+// Desktop-first media query mixin (for occasional use if needed)
+// Usage: @include media-breakpoint-down(md) { ... }
+@mixin media-breakpoint-down($breakpoint) {
+    $max-width: map.get($breakpoints, $breakpoint);
+
+    @if $max-width {
+        @media (max-width: $max-width) {
+            @content;
+        }
+    }
+
+    @else {
+        @content;
+    }
+}
+
+
+// Example usage with px-to-rem function:
+// .example-element {
+//   font-size: to_rem(16px);
+//
+//   @include media-breakpoint-up(md) {
+//     font-size: to_rem(18px);
+//   }
+//
+//   @include media-breakpoint-up(lg) {
+//     font-size: to_rem(20px);
+//   }
+// }
