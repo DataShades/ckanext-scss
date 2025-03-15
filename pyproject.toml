@@ -18,6 +18,14 @@ classifiers = [
 keywords = [ "CKAN", ]
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+    "pytest-ckan",
+    "pytest-playwright",
+    "pytest-factoryboy",
+    "pytest-mock",
+]
+
 [project.urls]
 Homepage = "https://github.com//ckanext-scss"
 
