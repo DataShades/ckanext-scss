@@ -59,7 +59,9 @@ class TestPageStyles:
         Args:
             user_factory: The factory to create a user.
             dataset_factory: The factory to create a dataset.
-            identity: The identity to prepare the test data for.
+            resource_factory: The factory to create a resource.
+            organization_factory: The factory to create an organization.
+            group_factory: The factory to create a group.
         """
         self.user = user_factory()
         self.dataset = dataset_factory()

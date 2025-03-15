@@ -161,28 +161,7 @@ A component-based approach to styling treats each user interface element as an i
 * Create a separate SCSS file for each component
 * Focus on making components self-contained and independent
 * Only use page-level styling as a last resort, for truly page-specific layouts
-* Structure your project to reflect component organization:
-
-```
-scss/
-├── abstracts/
-│   ├── _variables.scss
-│   ├── _functions.scss
-│   ├── _mixins.scss
-├── components/
-│   ├── _buttons.scss
-│   ├── _cards.scss
-│   ├── _forms.scss
-│   ├── _navbar.scss
-├── layouts/
-│   ├── _header.scss
-│   ├── _footer.scss
-│   ├── _sidebar.scss
-├── pages/
-│   ├── _home.scss
-│   ├── _about.scss
-└── main.scss
-```
+* Structure your project to reflect component organization. See the [Theme Structure](#theme-structure) above for an example.
 
 ## 3. BEM Naming Methodology
 
@@ -221,29 +200,32 @@ BEM (Block, Element, Modifier) is a naming convention for CSS classes that helps
   border-radius: 4px;
   padding: 1rem;
   
-  &--featured {
+  .card--featured {
     border-left: 4px solid $primary-color;
   }
   
-  &__title {
+  .card__title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
   }
   
-  &__content {
+  .card__content {
     color: $text-color;
   }
   
-  &__button {
+  .card__button {
     padding: 0.5rem 1rem;
   
-    &--primary {
+    .card__button--primary {
       background-color: $primary-color;
       color: white;
     }
   }
 }
 ```
+
+> **Note**
+> I suggest not using the `&` operator, as it's more complicated to search by the class name in the codebase.
 
 ### Benefits
 
@@ -258,8 +240,8 @@ Bootstrap 5 provides a comprehensive set of utility classes for common styling n
 
 ### Documentation References
 
-* [Bootstrap 5 Documentation](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
-* [Bootstrap 5 Utility Classes](https://getbootstrap.com/docs/5.0/utilities/api/)
+* [Bootstrap 5 Documentation](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
+* [Bootstrap 5 Utility Classes](https://getbootstrap.com/docs/5.1/utilities/api/)
 
 ### Recommended Utility Classes to Use
 
@@ -294,6 +276,9 @@ Sass variables provide a way to store information to be reused throughout your s
 ### Examples
 
 ```scss
+@use 'sass:color';
+@use 'sass:map';
+@use 'abstracts/mixins' as m;
 // Basic variables
 $primary-color: #007bff;
 $secondary-color: #6c757d;
@@ -301,8 +286,8 @@ $border-radius: 4px;
 $transition-speed: 0.3s;
 
 // Creating related shades with Sass functions
-$primary-light: lighten($primary-color, 15%);
-$primary-dark: darken($primary-color, 15%);
+$primary-light: color.adjust($primary-color, $lightness: 15%);
+$primary-dark: color.adjust($primary-color, $lightness: -15%);
 
 // Maps for organized collections
 $breakpoints: (
@@ -323,9 +308,8 @@ $breakpoints: (
   }
 }
 
-// Getting values from maps
-@media (min-width: map-get($breakpoints, "md")) {
-  // Tablet styles
+@include m.media-breakpoint-up(md) {
+    // Tablet styles
 }
 ```
 
@@ -333,13 +317,12 @@ $breakpoints: (
 
 While CSS variables (custom properties) offer runtime manipulation, we're currently using Sass variables because:
 
-1. We need to use Sass functions like `lighten()` and `darken()`
-2. They're processed at compile time, offering broader browser support
-3. They integrate seamlessly with the rest of our Sass architecture
+1. We need to use Sass functions like `color.adjust()`, `color.invert()` etc.
+2. They integrate seamlessly with the rest of our Sass architecture. It might be confusing to use both type of variables at the same time.
 
 ## 6. Using REM Units
 
-REM (Root EM) units are relative to the font size of the root element (typically the `<html>` element), which defaults to 16px in most browsers.
+REM (Root EM) units are relative to the font size of the root element (typically the `<html>` element), which defaults to `16px` in most browsers.
 
 ### Advantages
 
@@ -356,24 +339,33 @@ REM (Root EM) units are relative to the font size of the root element (typically
 * Use a helper function to convert from pixels to REMs for more intuitive development:
 
 ```scss
-@function to-rem($pixels, $context: 16px) {
-  @if (math.is-unitless($pixels)) {
-    $pixels: $pixels * 1px;
-  }
-  
-  @if (math.is-unitless($context)) {
-    $context: $context * 1px;
-  }
-  
-  @return math.div($pixels, $context) * 1rem;
-}
+@use "abstracts/functions" as f;
 
 // Usage
 .element {
-  font-size: to-rem(18px);
-  margin-bottom: to-rem(24px);
+  font-size: f.to_rem(18px);
+  margin-bottom: f.to_rem(24px);
+}
+
+// Resulting CSS:
+.element {
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
 }
 ```
+
+You also can just memorize the most usable values, see the table below.
+
+| Pixel Value | REM Value |
+|-------------|-----------|
+| 10px        | 0.625rem  |
+| 12px        | 0.75rem   |
+| 14px        | 0.875rem  |
+| 16px        | 1rem      |
+| 24px        | 1.5rem    |
+| 32px        | 2rem      |
+| 48px        | 3rem      |
+| 64px        | 4rem      |
 
 ## 7. Sass Mixins
 
